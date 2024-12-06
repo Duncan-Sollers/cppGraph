@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "Graph.h"
+#include "UndirectedGraph.h"
 
 int main() {
-  gph::GraphAdjMtx graph;
+  gph::UndirectedGraphAdjMtx graph;
   std::cout << "Hello World!\n";
   graph.addEdge(0, 1);
   graph.addEdge(0, 2);
@@ -14,7 +14,7 @@ int main() {
   graph.addEdge(5, 7);
   graph.print();
 
-  gph::GraphAdjList graphL;
+  gph::UndirectedGraphAdjList graphL;
   graphL.addEdge(0, 1);
   graphL.addEdge(0, 2);
   graphL.addEdge(2, 3);

@@ -1,15 +1,20 @@
 #pragma once
+#include <iostream>
 #include <list>
 #include <queue>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 namespace gph {
-class Graph {
+class UndirectedGraph {
  public:
+  static const int nodes = 10;
+
  private:
 };
-class GraphAdjMtx : Graph {  // inheriting from Graph
+class UndirectedGraphAdjMtx
+    : UndirectedGraph {  // inheriting from UndirectedGraph
  public:
   void addEdge(int row, int column) {
     adjMatrix[row][column] = true;
@@ -22,8 +27,8 @@ class GraphAdjMtx : Graph {  // inheriting from Graph
     numOfEdgesTotal--;
   }
   void print() {
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < nodes; i++) {
+      for (int j = 0; j < nodes; j++) {
         char temp = adjMatrix[i][j] ? '1' : ' ';
         std::cout << temp << " | ";
       }
@@ -34,13 +39,14 @@ class GraphAdjMtx : Graph {  // inheriting from Graph
   }
 
  private:
-  // std::vector<std::vector<bool>> adjMatrix = std::vector(8,
-  // std::vector<bool>(8,false)); // using vector in dynamic
-  bool adjMatrix[8][8] = {};
+  // std::vector<std::vector<bool>> adjMatrix = std::vector(nodes,
+  // std::vector<bool>(nodes,false)); // using vector in dynamic
+  bool adjMatrix[nodes][nodes] = {};
   int numOfEdgesTotal;
 };
 
-class GraphAdjList : Graph {  // inheriting from Graph
+class UndirectedGraphAdjList
+    : UndirectedGraph {  // inheriting from UndirectedGraph
  public:
   void addEdge(int row, int column) {
     adjList[row].push_back(column);
@@ -58,9 +64,9 @@ class GraphAdjList : Graph {  // inheriting from Graph
     std::set<int> searched;  // ints are nodes
     toSearch.push(start);
     while (toSearch.size() > 0) {
-      int cur = toSearch.front();
+      int curr = toSearch.front();
       toSearch.pop();
-      std::list<int> list = adjList[cur];
+      std::list<int> list = adjList[curr];
       for (int i : list) {
         if (i == search) {
           std::cout << "found ";
@@ -75,24 +81,56 @@ class GraphAdjList : Graph {  // inheriting from Graph
     return false;
   }
 
-  bool dfs(int start, int search, std::set<int>& searched, bool& found ) {
+  bool dfs(int start, int search, std::set<int>& searched, bool& found) {
     searched.insert(start);
     std::list<int> children = adjList[start];
-    for (int cur : children) {
-      if (cur == search) {
+    for (int curr : children) {
+      if (curr == search) {
         std::cout << "found ";
         found = true;
         return true;
       }
-      if (!searched.contains(cur)) {
-        dfs(cur, search, searched, found);
+      if (!searched.contains(curr)) {
+        dfs(curr, search, searched, found);
+      }
+    }
+    return false;
+  }
+  //                                          key  val
+  bool dfsCyclic(int start, std::unordered_map<int, bool>& visited,
+                 int parent) {
+    visited[start] = true;
+
+    // check all neighbors
+    for (int neighbor : adjList[start]) {
+      if (!visited[neighbor]) {
+        if (dfsCyclic(neighbor, visited, start)) {
+          return true;
+        }
+      }
+      // if the neighbor isnt the parent -> cycle
+      else if (neighbor != parent) {
+        return true;
       }
     }
     return false;
   }
 
+  bool checkForCycle() {
+    std::unordered_map<int, bool> visited;
+    // checks for cycles
+    for (int node = 0; node < nodes; node++) {
+      if (!visited[node]) {
+        if (dfsCyclic(node, visited, -1)) {
+          return true;  // cycle
+        }
+      }
+    }
+    return false;  // no cycled
+  }
+
   void print() {
-    for (int i = 0; i < 8; i++) {  // output of I
+    for (int i = 0; i < nodes; i++) {  // output of I
       std::cout << "Node: " << i << " => [";
       for (int j : adjList[i]) {
         std::cout << j << " , ";
@@ -104,7 +142,8 @@ class GraphAdjList : Graph {  // inheriting from Graph
   }
 
  private:
-  std::vector<std::list<int>> adjList = std::vector(8, std::list<int>());
+  std::vector<std::list<int>> adjList = std::vector(nodes, std::list<int>());
   int numOfEdgesTotal = 0;
 };
+
 }  // namespace gph
