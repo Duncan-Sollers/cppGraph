@@ -24,10 +24,37 @@ int main() {
   graphL.addEdge(5, 7);
   graphL.print();
 
+  if (graphL.checkForCycle()) {
+    std::cout << "Cycle detected in the graph." << std::endl;
+  } else {
+    std::cout << "No cycle detected in the graph." << std::endl;
+  }
+
+  /*
   std::cout << std::boolalpha << "BFS (0,7) => " << graphL.bfs(1, 2)
             << std::endl;
   std::set<int> set;
   bool found = false;
   graphL.dfs(1, 2, set, found);
   std::cout << std::boolalpha << "DFS (0,7) => " << found << std::endl;
+  */
+  gph::UndirectedGraphAdjList graphC;
+  graphC.addEdge(0, 1);
+  graphC.addEdge(0, 3);
+  graphC.addEdge(1, 5);
+  graphC.addEdge(5, 9);
+  graphC.addEdge(9, 10);
+  graphC.addEdge(10, 6);
+  graphC.addEdge(5, 4);
+  graphC.addEdge(4, 3);
+  graphC.addEdge(3, 7);
+  graphC.addEdge(4, 8);
+  graphC.addEdge(2, 2);
+  graphC.print();
+
+  if (graphC.checkForCycle()) {
+    std::cout << "Cycle detected in the graph." << std::endl;
+  } else {
+    std::cout << "No cycle detected in the graph." << std::endl;
+  }
 }

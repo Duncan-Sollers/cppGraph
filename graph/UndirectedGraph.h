@@ -9,7 +9,7 @@
 namespace gph {
 class UndirectedGraph {
  public:
-  static const int nodes = 10;
+  static const int nodes = 11;
 
  private:
 };
