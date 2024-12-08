@@ -42,7 +42,7 @@ class UndirectedGraphAdjMtx
   // std::vector<std::vector<bool>> adjMatrix = std::vector(nodes,
   // std::vector<bool>(nodes,false)); // using vector in dynamic
   bool adjMatrix[nodes][nodes] = {};
-  int numOfEdgesTotal;
+  int numOfEdgesTotal = 0;
 };
 
 class UndirectedGraphAdjList

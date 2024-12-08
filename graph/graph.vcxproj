@@ -131,6 +131,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectedGraph.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="UndirectedGraph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
